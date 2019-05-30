@@ -11,25 +11,28 @@ import java.nio.file.Paths;
 import java.sql.*;
 import java.util.Properties;
 
-
 /**
  * Hello world!
  */
-public class App implements Runnable{
-    private static final String CONFIGS_PROPERTIES = "configs.properties";
-    private static final String LOG4J_PROPERTIES = "log4j.properties";
-    static Properties properties = new Properties();
+public class App implements Runnable {
+    public static final String CONFIGS_PROPERTIES = "configs.properties";
+    public static final String LOG4J_PROPERTIES = "log4j.properties";
+    public static Properties properties = new Properties();
     private final static Logger log = Logger.getLogger(App.class);
 
     public static void main(String[] args) {
         log.info("Hello world.");
         initialize();
+        Testor testor = new Testor();
+        Thread testorThread = new Thread(testor);
+        testorThread.setName("testorThread");
+        testorThread.start();
 
         // Iterating
         int limit = Integer.parseInt(properties.getProperty("iterations"));
         log.info("Number of iterations : " + limit);
         for (int i = 1; i <= limit; i++) {
-            App app = new App ();
+            App app = new App();
             Thread thread = new Thread(app);
             thread.setName("thread" + Integer.toString(i));
             thread.start();
@@ -74,7 +77,6 @@ public class App implements Runnable{
         }
 
         if (connection != null) {
-            log.info("Returning connection.");
             return connection;
         } else {
             log.error("Failed to create a connection.");
@@ -88,12 +90,11 @@ public class App implements Runnable{
         log.info(Thread.currentThread().getName());
         Connection connection = getConnection();
         Statement statement;
-        ResultSet resultSet;
         try {
             log.info(Thread.currentThread().getName() + " Executing test query : " + properties.getProperty("testQuery"));
             statement = connection.createStatement();
-            resultSet = statement.executeQuery(properties.getProperty("testQuery"));
-            // TODO should i iterate through result set?
+            statement.executeQuery(properties.getProperty("testQuery"));
+            // TODO should I iterate through result set?
             log.info(Thread.currentThread().getName() + " Test query success.");
         } catch (SQLException e) {
             log.error(Thread.currentThread().getName() + " Error while test query.", e);
@@ -114,11 +115,17 @@ public class App implements Runnable{
         try {
             // TODO check if re-initializing statement is okay?
             statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
+            statement.executeQuery(query);
             // TODO should I iterate through result set?
             log.info(Thread.currentThread().getName() + " Query execution success.");
         } catch (SQLException e) {
             log.error(Thread.currentThread().getName() + " Error while executing the query.", e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                log.error(Thread.currentThread().getName() + " Error while closing the connection.", e);
+            }
         }
     }
 }

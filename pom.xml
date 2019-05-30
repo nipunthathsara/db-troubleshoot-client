@@ -26,33 +26,6 @@
         </dependency>
     </dependencies>
 
-    <!--<build>-->
-    <!--<plugins>-->
-    <!--<plugin>-->
-    <!--<groupId>org.apache.maven.plugins</groupId>-->
-    <!--<artifactId>maven-assembly-plugin</artifactId>-->
-    <!--<executions>-->
-    <!--<execution>-->
-    <!--<id>jar-with-dependencies</id>-->
-    <!--<phase>package</phase>-->
-    <!--<goals>-->
-    <!--<goal>single</goal>-->
-    <!--</goals>-->
-    <!--<configuration>-->
-    <!--<descriptorRefs>-->
-    <!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
-    <!--</descriptorRefs>-->
-    <!--<archive>-->
-    <!--<manifest>-->
-    <!--<mainClass>org.wso2.test.App</mainClass>-->
-    <!--</manifest>-->
-    <!--</archive>-->
-    <!--</configuration>-->
-    <!--</execution>-->
-    <!--</executions>-->
-    <!--</plugin>-->
-    <!--</plugins>-->
-    <!--</build>-->
     <build>
         <plugins>
             <plugin>
